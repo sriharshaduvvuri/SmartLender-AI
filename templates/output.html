@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-9">
+        <div class="glass-panel p-4 p-md-5 {% if prediction == 'Approved' %}result-approved{% else %}result-rejected{% endif %}">
+            
+            <div class="text-center mb-5">
+                {% if prediction == 'Approved' %}
+                    <div class="display-1 text-success mb-2"><i class="bi bi-patch-check-fill"></i></div>
+                    <h1 class="display-4 fw-bold text-success">Loan Approved</h1>
+                    <p class="lead text-secondary">The system suggests the applicant meets criteria for automated approval.</p>
+                {% else %}
+                    <div class="display-1 text-danger mb-2"><i class="bi bi-shield-x"></i></div>
+                    <h1 class="display-4 fw-bold text-danger">Loan Rejected</h1>
+                    <p class="lead text-secondary">The system suggests the application exhibits high credit risk metrics.</p>
+                {% endif %}
+            </div>
+
+            <!-- Performance metrics grid -->
+            <div class="row g-3 mb-5 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="p-3 border rounded bg-body-tertiary">
+                        <span class="small text-secondary d-block mb-1">Confidence Score</span>
+                        <h4 class="fw-bold m-0 {% if prediction == 'Approved' %}text-success{% else %}text-danger{% endif %}">{{ confidence }}</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 border rounded bg-body-tertiary">
+                        <span class="small text-secondary d-block mb-1">Model Classifier</span>
+                        <h5 class="fw-bold m-0 text-primary">{{ model_used }}</h5>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 border rounded bg-body-tertiary">
+                        <span class="small text-secondary d-block mb-1">Inference Latency</span>
+                        <h5 class="fw-bold m-0 text-accent">{{ latency }}</h5>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 border rounded bg-body-tertiary">
+                        <span class="small text-secondary d-block mb-1">Result Status</span>
+                        <h5 class="fw-bold m-0 {% if prediction == 'Approved' %}text-success{% else %}text-danger{% endif %}">{{ prediction }}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Underwriter Advisory Details -->
+                <div class="col-md-6">
+                    <div class="card bg-body-tertiary border-0 p-4 h-100">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-shield-exclamation text-indigo me-2"></i>Underwriter Advisory</h5>
+                        
+                        {% if prediction == 'Approved' %}
+                            {% if inputs.credit_history == '1.0' and inputs.applicant_income > 4000 %}
+                                <div class="alert alert-success border-0 small">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <strong>Excellent Risk Profile:</strong> Applicant holds a healthy credit score and stable recurring income. Suitable for instant processing.
+                                </div>
+                            {% else %}
+                                <div class="alert alert-warning border-0 small">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    <strong>Marginal Approval:</strong> Applicant approved but exhibits high debt-to-income indicators or multiple dependents. Review co-applicant income.
+                                </div>
+                            {% endif %}
+                            <p class="small text-secondary">
+                                Recommended Action: Proceed to dispatch digital loan agreements. Maintain standard documentation records.
+                            </p>
+                        {% else %}
+                            {% if inputs.credit_history == '0.0' %}
+                                <div class="alert alert-danger border-0 small">
+                                    <i class="bi bi-x-circle-fill me-2"></i>
+                                    <strong>Critical credit rating issue:</strong> The borrower's credit score history failed validation checks. Borrowers with bad credit rating default in over 90% of model iterations.
+                                </div>
+                            {% endif %}
+                            {% if inputs.applicant_income == 0 or (inputs.applicant_income > 0 and inputs.loan_amount / inputs.applicant_income > 0.4) %}
+                                <div class="alert alert-warning border-0 small">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <strong>Unbalanced Debt Ratio:</strong> Requested loan amount is disproportionate to applicant's base monthly income streams.
+                                </div>
+                            {% endif %}
+                            <p class="small text-secondary">
+                                Recommended Action: Request manual override validation checks or reject request. Co-signer attachment may be requested.
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Input Summary Panel -->
+                <div class="col-md-6">
+                    <div class="card bg-body-tertiary border-0 p-4 h-100">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-file-text text-primary me-2"></i>Borrower Profile Summary</h5>
+                        <div class="row g-2 small">
+                            <div class="col-6 text-secondary">Gender:</div>
+                            <div class="col-6 fw-semibold text-end">{{ inputs.gender }}</div>
+                            
+                            <div class="col-6 text-secondary">Marital Status:</div>
+                            <div class="col-6 fw-semibold text-end">{% if inputs.married == 'Yes' %}Married{% else %}Unmarried{% endif %}</div>
+
+                            <div class="col-6 text-secondary">Dependents:</div>
+                            <div class="col-6 fw-semibold text-end">{{ inputs.dependents }}</div>
+
+                            <div class="col-6 text-secondary">Education:</div>
+                            <div class="col-6 fw-semibold text-end">{{ inputs.education }}</div>
+
+                            <div class="col-6 text-secondary">Self Employed:</div>
+                            <div class="col-6 fw-semibold text-end">{% if inputs.self_employed == 'Yes' %}Yes{% else %}No{% endif %}</div>
+
+                            <div class="col-6 text-secondary">Applicant Income:</div>
+                            <div class="col-6 fw-semibold text-end">${{ "{:,.2f}".format(inputs.applicant_income) }}</div>
+
+                            <div class="col-6 text-secondary">Co-Applicant Income:</div>
+                            <div class="col-6 fw-semibold text-end">${{ "{:,.2f}".format(inputs.coapplicant_income) }}</div>
+
+                            <div class="col-6 text-secondary">Loan Value Requested:</div>
+                            <div class="col-6 fw-semibold text-end">${{ "{:,.2f}".format(inputs.loan_amount * 1000) }} (${{ inputs.loan_amount }}k)</div>
+
+                            <div class="col-6 text-secondary">Repayment Term:</div>
+                            <div class="col-6 fw-semibold text-end">{{ inputs.loan_amount_term | int }} Months</div>
+
+                            <div class="col-6 text-secondary">Credit Record Rating:</div>
+                            <div class="col-6 fw-semibold text-end">{% if inputs.credit_history == '1.0' %}Good (1.0){% else %}Bad (0.0){% endif %}</div>
+
+                            <div class="col-6 text-secondary">Property Location:</div>
+                            <div class="col-6 fw-semibold text-end">{{ inputs.property_area }}</div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- Decision Drivers Section (Feature Explanations) -->
+            {% if explanations %}
+            <div class="card bg-body-tertiary border-0 p-4 mt-4">
+                <h5 class="fw-bold mb-3" id="explanation-heading"><i class="bi bi-cpu-fill text-indigo me-2"></i>Local Sensitivity Explanation</h5>
+                <p class="text-secondary small mb-3">This diagnostic identifies the primary factors that influenced the predictive outcome compared to base-median applicants. Positive impacts support approval; negative impacts favor rejection.</p>
+                
+                <div class="space-y-3">
+                    {% for driver in explanations %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1 small">
+                            <span class="fw-semibold">{{ driver.feature_name }}</span>
+                            <span class="fw-bold {% if driver.direction == 'positive' %}text-success{% else %}text-danger{% endif %}">
+                                {% if driver.direction == 'positive' %}+{% endif %}{{ driver.impact }}%
+                            </span>
+                        </div>
+                        <div class="progress" style="height: 10px; background-color: var(--border-color);">
+                            {% if driver.direction == 'positive' %}
+                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ driver.impact | abs }}%" aria-valuenow="{{ driver.impact | abs }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            {% else %}
+                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ driver.impact | abs }}%" aria-valuenow="{{ driver.impact | abs }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mt-3 text-secondary" style="font-size: 11px; border-top: 1px solid var(--border-color); pt-2;">
+                    <i class="bi bi-info-circle-fill me-1"></i>
+                    <em>Feature influence values estimate local model sensitivity and should not be interpreted as causal effects.</em>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Page actions -->
+            <div class="d-flex justify-content-end gap-3 border-top pt-4 mt-5">
+                <a href="{{ url_for('home') }}" class="btn btn-outline-secondary px-4">
+                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> Return to Dashboard
+                </a>
+                <a href="{{ url_for('predict') }}" class="btn btn-primary px-5">
+                    <i class="bi bi-arrow-repeat me-1"></i> Predict Another Loan
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

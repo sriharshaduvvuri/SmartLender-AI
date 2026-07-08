@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-10">
+        <div class="glass-panel p-4 p-md-5">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                <div>
+                    <h2 class="fw-bold m-0"><i class="bi bi-file-earmark-check-fill text-success me-2"></i>Batch Prediction Completed</h2>
+                    <p class="text-secondary mb-0 small">Batch underwriting run completed successfully. View statistics and export reports below.</p>
+                </div>
+                <a href="{{ url_for('predict_bulk') }}" class="btn btn-outline-secondary btn-sm px-3">
+                    <i class="bi bi-arrow-repeat me-1"></i> Upload Another
+                </a>
+            </div>
+
+            <!-- Stats grid -->
+            <div class="row g-3 mb-5 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="p-3 border rounded bg-body-tertiary">
+                        <span class="small text-secondary d-block mb-1">Total Processed</span>
+                        <h3 class="fw-bold m-0 text-primary">{{ results.total }}</h3>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 border rounded bg-body-tertiary">
+                        <span class="small text-secondary d-block mb-1">Approved Applications</span>
+                        <h3 class="fw-bold m-0 text-success">{{ results.approved }} ({{ results.approved_pct }})</h3>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 border rounded bg-body-tertiary">
+                        <span class="small text-secondary d-block mb-1">Rejected Applications</span>
+                        <h3 class="fw-bold m-0 text-danger">{{ results.rejected }} ({{ results.rejected_pct }})</h3>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 border rounded bg-body-tertiary">
+                        <span class="small text-secondary d-block mb-1">Avg Confidence</span>
+                        <h3 class="fw-bold m-0 text-accent">{{ results.avg_confidence }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action panel -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-body-tertiary p-4 rounded-3 border mb-5 gap-3">
+                <div>
+                    <h5 class="fw-bold mb-1"><i class="bi bi-file-earmark-spreadsheet text-primary me-2"></i>Export Prediction Results</h5>
+                    <p class="text-secondary small mb-0">Download the complete dataset with added decision columns and confidence scores.</p>
+                </div>
+                <a href="{{ url_for('download_bulk_report', filename=results.report_file) }}" class="btn btn-success btn-lg px-4 shadow-sm">
+                    <i class="bi bi-download me-2"></i> Download Complete CSV
+                </a>
+            </div>
+
+            <!-- Data table preview -->
+            <h5 class="fw-bold mb-3"><i class="bi bi-table text-indigo me-2"></i>Batch Preview (Top 10 rows)</h5>
+            <div class="table-responsive border rounded-3 mb-4">
+                <table class="table table-hover align-middle border-0 small m-0">
+                    <thead>
+                        <tr class="table-dark">
+                            {% for header in results.headers %}
+                                <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in results.preview_rows %}
+                        <tr>
+                            {% for header in results.headers %}
+                                <td>
+                                    {% if header == 'Prediction_Decision' %}
+                                        {% if row[header] == 'Approved' %}
+                                            <span class="badge badge-approved"><i class="bi bi-check-circle-fill me-1"></i>Approved</span>
+                                        {% else %}
+                                            <span class="badge badge-rejected"><i class="bi bi-x-circle-fill me-1"></i>Rejected</span>
+                                        {% endif %}
+                                    {% elif header == 'Confidence_Score' %}
+                                        <span class="fw-bold text-accent">{{ row[header] }}</span>
+                                    {% else %}
+                                        {{ row[header] }}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end gap-3 border-top pt-4">
+                <a href="{{ url_for('home') }}" class="btn btn-outline-secondary px-4">
+                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> Return to Dashboard
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

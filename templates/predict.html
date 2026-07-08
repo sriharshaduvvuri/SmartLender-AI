@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-9">
+        <div class="glass-panel p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                <div>
+                    <h2 class="fw-bold m-0"><i class="bi bi-file-earmark-person-fill text-primary me-2"></i>Borrower Evaluation Form</h2>
+                    <p class="text-secondary mb-0 small">Enter the borrower's background statistics for loan application risk analysis.</p>
+                </div>
+                <a href="{{ url_for('home') }}" class="btn btn-outline-secondary btn-sm px-3">
+                    <i class="bi bi-arrow-left me-1"></i> Dashboard
+                </a>
+            </div>
+
+            <!-- Client-Side Javascript Validation Alerts -->
+            <div id="js-validation-errors" class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" style="display: none;" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <span id="js-errors-content"></span>
+                <button type="button" class="btn-close" onclick="document.getElementById('js-validation-errors').style.display='none';" aria-label="Close"></button>
+            </div>
+
+            <!-- Prediction Input Form -->
+            <form id="prediction-form" method="POST" action="{{ url_for('predict') }}" class="needs-validation" novalidate>
+                
+                <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-person-fill me-2"></i>1. Demographic Information</h5>
+                <div class="row g-4 mb-4">
+                    <!-- Gender -->
+                    <div class="col-md-4">
+                        <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="" disabled {% if not form_values.gender %}selected{% endif %}>Select Gender</option>
+                            <option value="Male" {% if form_values.gender == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if form_values.gender == 'Female' %}selected{% endif %}>Female</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Married -->
+                    <div class="col-md-4">
+                        <label for="married" class="form-label">Marital Status <span class="text-danger">*</span></label>
+                        <select class="form-select" id="married" name="married" required>
+                            <option value="" disabled {% if not form_values.married %}selected{% endif %}>Select Marital Status</option>
+                            <option value="Yes" {% if form_values.married == 'Yes' %}selected{% endif %}>Married / Yes</option>
+                            <option value="No" {% if form_values.married == 'No' %}selected{% endif %}>Unmarried / No</option>
+                        </select>
+                    </div>
+
+                    <!-- Dependents -->
+                    <div class="col-md-4">
+                        <label for="dependents" class="form-label">Number of Dependents <span class="text-danger">*</span></label>
+                        <select class="form-select" id="dependents" name="dependents" required>
+                            <option value="" disabled {% if not form_values.dependents %}selected{% endif %}>Select Dependents</option>
+                            <option value="0" {% if form_values.dependents == '0' %}selected{% endif %}>0</option>
+                            <option value="1" {% if form_values.dependents == '1' %}selected{% endif %}>1</option>
+                            <option value="2" {% if form_values.dependents == '2' %}selected{% endif %}>2</option>
+                            <option value="3+" {% if form_values.dependents == '3+' or form_values.dependents == '3' %}selected{% endif %}>3+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-3 text-secondary border-top pt-4"><i class="bi bi-briefcase-fill me-2"></i>2. Professional Status</h5>
+                <div class="row g-4 mb-4">
+                    <!-- Education -->
+                    <div class="col-md-6">
+                        <label for="education" class="form-label">Education Qualification <span class="text-danger">*</span></label>
+                        <select class="form-select" id="education" name="education" required>
+                            <option value="" disabled {% if not form_values.education %}selected{% endif %}>Select Education</option>
+                            <option value="Graduate" {% if form_values.education == 'Graduate' %}selected{% endif %}>Graduate</option>
+                            <option value="Not Graduate" {% if form_values.education == 'Not Graduate' %}selected{% endif %}>Not Graduate</option>
+                        </select>
+                    </div>
+
+                    <!-- Self Employed -->
+                    <div class="col-md-6">
+                        <label for="self_employed" class="form-label">Self Employed Status <span class="text-danger">*</span></label>
+                        <select class="form-select" id="self_employed" name="self_employed" required>
+                            <option value="" disabled {% if not form_values.self_employed %}selected{% endif %}>Select Self Employed</option>
+                            <option value="Yes" {% if form_values.self_employed == 'Yes' %}selected{% endif %}>Yes, Self-Employed</option>
+                            <option value="No" {% if form_values.self_employed == 'No' %}selected{% endif %}>No, Salaried Employee</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-3 text-secondary border-top pt-4"><i class="bi bi-cash-coin me-2"></i>3. Financial Information</h5>
+                <div class="row g-4 mb-4">
+                    <!-- Applicant Income -->
+                    <div class="col-md-6">
+                        <label for="applicant_income" class="form-label">Applicant Monthly Income ($) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="any" min="0" class="form-control" id="applicant_income" name="applicant_income" 
+                                value="{{ form_values.applicant_income if form_values.applicant_income is defined else '5400' }}" required>
+                        </div>
+                        <div class="form-text small">Enter base monthly income before tax.</div>
+                    </div>
+
+                    <!-- Co-applicant Income -->
+                    <div class="col-md-6">
+                        <label for="coapplicant_income" class="form-label">Co-Applicant Monthly Income ($) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="any" min="0" class="form-control" id="coapplicant_income" name="coapplicant_income" 
+                                value="{{ form_values.coapplicant_income if form_values.coapplicant_income is defined else '0' }}" required>
+                        </div>
+                        <div class="form-text small">Enter secondary applicant's monthly income if applicable.</div>
+                    </div>
+
+                    <!-- Loan Amount -->
+                    <div class="col-md-6">
+                        <label for="loan_amount" class="form-label">Requested Loan Amount (Thousands $) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="any" min="1" class="form-control" id="loan_amount" name="loan_amount" 
+                                value="{{ form_values.loan_amount if form_values.loan_amount is defined else '140' }}" required>
+                            <span class="input-group-text">k</span>
+                        </div>
+                        <div class="form-text small">E.g., enter 150 for a loan value of $150,000.</div>
+                    </div>
+
+                    <!-- Loan Amount Term -->
+                    <div class="col-md-6">
+                        <label for="loan_amount_term" class="form-label">Loan Term Duration (Months) <span class="text-danger">*</span></label>
+                        <select class="form-select" id="loan_amount_term" name="loan_amount_term" required>
+                            <option value="12" {% if form_values.loan_amount_term == '12' %}selected{% endif %}>12 Months (1 Year)</option>
+                            <option value="36" {% if form_values.loan_amount_term == '36' %}selected{% endif %}>36 Months (3 Years)</option>
+                            <option value="60" {% if form_values.loan_amount_term == '60' %}selected{% endif %}>60 Months (5 Years)</option>
+                            <option value="120" {% if form_values.loan_amount_term == '120' %}selected{% endif %}>120 Months (10 Years)</option>
+                            <option value="180" {% if form_values.loan_amount_term == '180' %}selected{% endif %}>180 Months (15 Years)</option>
+                            <option value="240" {% if form_values.loan_amount_term == '240' %}selected{% endif %}>240 Months (20 Years)</option>
+                            <option value="300" {% if form_values.loan_amount_term == '300' %}selected{% endif %}>300 Months (25 Years)</option>
+                            <option value="360" {% if form_values.loan_amount_term == '360' or not form_values.loan_amount_term %}selected{% endif %}>360 Months (30 Years)</option>
+                            <option value="480" {% if form_values.loan_amount_term == '480' %}selected{% endif %}>480 Months (40 Years)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-3 text-secondary border-top pt-4"><i class="bi bi-shield-check me-2"></i>4. Credit Record & Settings</h5>
+                <div class="row g-4 mb-5">
+                    <!-- Credit History -->
+                    <div class="col-md-4">
+                        <label for="credit_history" class="form-label">Credit History Status <span class="text-danger">*</span></label>
+                        <select class="form-select" id="credit_history" name="credit_history" required>
+                            <option value="" disabled {% if not form_values.credit_history %}selected{% endif %}>Select Credit Rating</option>
+                            <option value="1.0" {% if form_values.credit_history == '1.0' or not form_values.credit_history %}selected{% endif %}>Good Credit Rating (1.0)</option>
+                            <option value="0.0" {% if form_values.credit_history == '0.0' %}selected{% endif %}>Bad Credit Rating (0.0)</option>
+                        </select>
+                        <div class="form-text small">Does the client meet credit history standards?</div>
+                    </div>
+
+                    <!-- Property Area -->
+                    <div class="col-md-4">
+                        <label for="property_area" class="form-label">Property Location Area <span class="text-danger">*</span></label>
+                        <select class="form-select" id="property_area" name="property_area" required>
+                            <option value="" disabled {% if not form_values.property_area %}selected{% endif %}>Select Area</option>
+                            <option value="Urban" {% if form_values.property_area == 'Urban' %}selected{% endif %}>Urban / City Area</option>
+                            <option value="Semiurban" {% if form_values.property_area == 'Semiurban' or not form_values.property_area %}selected{% endif %}>Semi-Urban / Suburban Area</option>
+                            <option value="Rural" {% if form_values.property_area == 'Rural' %}selected{% endif %}>Rural / Countryside Area</option>
+                        </select>
+                    </div>
+
+                    <!-- Model Choice -->
+                    <div class="col-md-4">
+                        <label for="model_used" class="form-label">Prediction Model Algorithm <span class="text-danger">*</span></label>
+                        <select class="form-select" id="model_used" name="model_used" required>
+                            <option value="best_model" {% if model_used == 'best_model' %}selected{% endif %}>(Recommended) Best Model</option>
+                            <option value="xgboost" {% if model_used == 'xgboost' %}selected{% endif %}>XGBoost</option>
+                            <option value="random_forest" {% if model_used == 'random_forest' %}selected{% endif %}>Random Forest</option>
+                            <option value="decision_tree" {% if model_used == 'decision_tree' %}selected{% endif %}>Decision Tree</option>
+                            <option value="knn" {% if model_used == 'knn' %}selected{% endif %}>K-Nearest Neighbors</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Form submission buttons -->
+                <div class="d-flex justify-content-end gap-3 border-top pt-4">
+                    <button type="reset" class="btn btn-outline-secondary px-4">Reset Form</button>
+                    <button type="submit" class="btn btn-primary px-5"><i class="bi bi-calculator-fill me-2"></i>Generate Prediction</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

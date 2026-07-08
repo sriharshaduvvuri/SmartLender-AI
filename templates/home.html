@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row align-items-center mb-5">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+        <h1 class="display-4 fw-bold hero-header mb-3">Smart Lender System</h1>
+        <p class="lead text-secondary">
+            An intelligent machine learning web application capable of predicting whether a customer's loan application will be <strong>Approved</strong> or <strong>Rejected</strong>.
+        </p>
+        <p class="text-secondary mb-4">
+            Leverage advanced ensemble models, gradient boosting engines, and custom preprocessing pipelines to make instant, consistent, and data-driven risk evaluations for borrowers. Reduce credit risk and manual bank underwriting times from hours to milliseconds.
+        </p>
+        <div class="d-flex gap-3">
+            <a href="{{ url_for('predict') }}" class="btn btn-primary btn-lg px-4">
+                <i class="bi bi-play-circle-fill me-2"></i> Launch Predictor
+            </a>
+            <a href="#dashboard-section" class="btn btn-outline-primary btn-lg px-4">
+                <i class="bi bi-grid-3x3-gap-fill me-2"></i> View Dashboard
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="glass-panel p-4 text-center">
+            <h5 class="fw-bold mb-4 text-start"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Live System Metrics</h5>
+            <div class="row g-3">
+                <div class="col-6 col-md-4">
+                    <div class="p-3 border rounded-3 bg-body-tertiary">
+                        <h2 class="fw-bold text-primary">{{ stats.total }}</h2>
+                        <span class="small text-secondary">Total Predictions</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="p-3 border rounded-3 bg-body-tertiary">
+                        <h2 class="fw-bold text-success">{{ stats.approved }}</h2>
+                        <span class="small text-secondary">Approved Loans</span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="p-3 border rounded-3 bg-body-tertiary">
+                        <h2 class="fw-bold text-danger">{{ stats.rejected }}</h2>
+                        <span class="small text-secondary">Rejected Loans</span>
+                    </div>
+                </div>
+            </div>
+            
+            {% if stats.total > 0 %}
+            <div class="mt-4 d-flex justify-content-center" style="max-height: 180px;">
+                <canvas id="predictionStatsChart" style="max-width: 180px; max-height: 180px;"></canvas>
+            </div>
+            {% else %}
+            <div class="mt-4 p-3 rounded-3 text-start small border border-secondary text-secondary bg-body-tertiary">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                No live prediction records found. Charts will render once applications are processed.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Section -->
+<section id="dashboard-section" class="mb-5 pt-4">
+    <h3 class="fw-bold mb-4"><i class="bi bi-activity text-primary me-2"></i>Model Analytics & EDA</h3>
+    
+    <div class="row g-4">
+        {% if has_eda_images %}
+        <!-- Model Performance -->
+        <div class="col-lg-6">
+            <div class="glass-card p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-bar-chart-fill text-primary me-2"></i>Classifier Comparison</h5>
+                <p class="text-secondary small">Evaluated accuracy and F1-score on the stratification holdout dataset.</p>
+                <div class="text-center">
+                    <img src="{{ url_for('static', filename='images/model_comparison.png') }}" class="img-fluid rounded border shadow-sm mt-2" alt="Model Comparison Plot">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Credit History Relationship -->
+        <div class="col-lg-6">
+            <div class="glass-card p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-bar-chart-steps text-danger me-2"></i>Credit History Influence</h5>
+                <p class="text-secondary small">Count of historical approvals and rejections stratified by credit history scores (1 = Good, 0 = Bad).</p>
+                <div class="text-center">
+                    <img src="{{ url_for('static', filename='images/credit_history_vs_status.png') }}" class="img-fluid rounded border shadow-sm mt-2" alt="Credit History Plot">
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-warning p-4 border-0 shadow-sm glass-panel">
+                <h5 class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i>Visualizations Not Generated</h5>
+                <p class="mb-0">
+                    The analytics visualizations directory is currently empty. Run the machine learning training pipeline first to download the CSV dataset, fit models, and generate these plots:
+                    <code class="d-block mt-2 bg-dark text-white p-2 rounded">python train.py</code>
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Features & Architecture -->
+<div class="row g-4 mb-5">
+    <!-- Features list -->
+    <div class="col-lg-7">
+        <div class="glass-panel p-4 h-100">
+            <h4 class="fw-bold mb-4"><i class="bi bi-tags-fill text-accent me-2"></i>Input Features Dictionary</h4>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle border-0 small">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>Feature Name</th>
+                            <th>Description</th>
+                            <th>Encoding / Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold">Gender</td>
+                            <td class="text-secondary">Applicant binary gender identification.</td>
+                            <td>Male / Female</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Married</td>
+                            <td class="text-secondary">Applicant legal marital status.</td>
+                            <td>Yes / No</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Dependents</td>
+                            <td class="text-secondary">Number of financial dependents.</td>
+                            <td>0, 1, 2, 3+</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Education</td>
+                            <td class="text-secondary">Academic graduation qualification status.</td>
+                            <td>Graduate / Not Graduate</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Self Employed</td>
+                            <td class="text-secondary">Indicates if applicant is self-employed.</td>
+                            <td>Yes / No</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Applicant Income</td>
+                            <td class="text-secondary">Monthly base income of applicant ($).</td>
+                            <td>Numeric (e.g. $150 to $81,000+)</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Co-Applicant Income</td>
+                            <td class="text-secondary">Monthly income of the co-applicant ($).</td>
+                            <td>Numeric (e.g. $0 to $41,000+)</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Loan Amount</td>
+                            <td class="text-secondary">Loan credit value requested (thousands).</td>
+                            <td>Numeric (e.g. $9k to $700k)</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Loan Amount Term</td>
+                            <td class="text-secondary">Time period duration for repayment (months).</td>
+                            <td>Numeric (12, 36, 60, 120, 180, 240, 360)</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Credit History</td>
+                            <td class="text-secondary">Credit rating record meeting standards.</td>
+                            <td>Good (1.0) / Bad (0.0)</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Property Area</td>
+                            <td class="text-secondary">Geographic designation classification.</td>
+                            <td>Rural / Semiurban / Urban</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Machine Learning Models Details -->
+    <div class="col-lg-5">
+        <div class="glass-panel p-4 h-100">
+            <h4 class="fw-bold mb-4"><i class="bi bi-cpu-fill text-secondary me-2"></i>Predictive Algorithms</h4>
+            
+            <div class="mb-3 border-bottom pb-3">
+                <h6 class="fw-bold text-primary mb-1">XGBoost Classifier</h6>
+                <p class="text-secondary small mb-0">Extreme Gradient Boosting decision trees. Fits ensemble models iteratively to correct weak prediction residues. Highly robust against tabular overfitting.</p>
+            </div>
+            <div class="mb-3 border-bottom pb-3">
+                <h6 class="fw-bold text-primary mb-1">Random Forest</h6>
+                <p class="text-secondary small mb-0">A bootstrap ensemble bagging classifier. Fits many parallel deep decision trees and votes on output classes to minimize prediction variance.</p>
+            </div>
+            <div class="mb-3 border-bottom pb-3">
+                <h6 class="fw-bold text-primary mb-1">Decision Tree Classifier</h6>
+                <p class="text-secondary small mb-0">A clear, tree-like flowchart logic splits nodes on information gain index values (Gini/Entropy). Highly interpretable structure.</p>
+            </div>
+            <div>
+                <h6 class="fw-bold text-primary mb-1">K-Nearest Neighbors (KNN)</h6>
+                <p class="text-secondary small mb-0">Instance-based classification that groups application profiles based on geometric distance clusters (Euclidean metric) of closest neighbors.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Predictions Section -->
+<section class="glass-panel p-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold m-0"><i class="bi bi-history text-indigo me-2"></i>Audit Logs - Recent Predictions</h4>
+        <span class="badge bg-secondary small">Stored in SQLite</span>
+    </div>
+    {% if recent_predictions %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle border-0 small">
+            <thead>
+                <tr class="table-secondary">
+                    <th>Timestamp</th>
+                    <th>Selected Model</th>
+                    <th>Inference Speed</th>
+                    <th>Confidence Probability</th>
+                    <th>Prediction Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in recent_predictions %}
+                <tr>
+                    <td>{{ log.timestamp }}</td>
+                    <td><span class="badge bg-dark text-light">{{ log.model_used }}</span></td>
+                    <td>{{ "%.2f"|format(log.latency_ms) }} ms</td>
+                    <td>{{ "%.1f"|format(log.confidence_score * 100) }}%</td>
+                    <td>
+                        {% if log.prediction_status == 'Approved' %}
+                        <span class="badge badge-approved"><i class="bi bi-check-circle-fill me-1"></i>Approved</span>
+                        {% else %}
+                        <span class="badge badge-rejected"><i class="bi bi-x-circle-fill me-1"></i>Rejected</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-secondary text-center py-4 mb-0"><i class="bi bi-database-dash me-2"></i>No predictions stored in system transaction logs yet. Try performing your first loan prediction!</p>
+    {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% if stats.total > 0 %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.getElementById('predictionStatsChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Approved', 'Rejected'],
+            datasets: [{
+                data: [{{ stats.approved }}, {{ stats.rejected }}],
+                backgroundColor: ['#10b981', '#ef4444'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true
+                }
+            },
+            cutout: '70%'
+        }
+    });
+});
+</script>
+{% endif %}
+{% endblock %}
