@@ -1,19 +1,26 @@
 # SmartLender AI
 ## Intelligent Loan Approval Prediction System
 
+## 🚀 Live Demo
+
+🔗 **Try SmartLender AI Live:**  
+https://smartlender-ai-gytu.onrender.com
+
+> **Deployment Note:** SmartLender AI is deployed on Render. The free-tier instance may spin down after inactivity, so the first request may take up to 60 seconds to load.
+
 SmartLender AI is a machine learning-powered loan approval prediction and underwriting support web application. The system evaluates structured borrower information and predicts whether a loan application is likely to be approved or rejected using trained classification models.
 
 The application combines machine learning, data preprocessing, model evaluation, explainable AI, batch prediction, authentication, live analytics, and Flask-based web deployment.
 
 ---
 
-## Project Attribution
+## 📌 Project Attribution
 
 **Project Name:** Smart Lender
 
 **Project Domain:** Artificial Intelligence & Machine Learning (AI & ML)
 
-**Project Program:** SmartBridge AI & ML Project
+**Project Program:** SmartBridge
 
 **Project Learning Platform:** SkillWallet
 
@@ -21,316 +28,614 @@ The application combines machine learning, data preprocessing, model evaluation,
 
 **Email:** sriharshasarmaduvvuri@gmail.com
 
-> Smart Lender was undertaken as an Artificial Intelligence and Machine Learning project through the SmartBridge / SkillWallet project learning environment. This repository contains the implemented, enhanced, secured, tested, and extended version of the SmartLender loan approval prediction system developed by Duvvuri Subrahmanya Sri Harsha Sarma.
+> Smart Lender was undertaken as an Artificial Intelligence and Machine Learning project through the SmartBridge / SkillWallet project learning environment. This repository contains the implemented, enhanced, secured, tested, deployed, and extended version of the SmartLender loan approval prediction system developed by Duvvuri Subrahmanya Sri Harsha Sarma.
 
-The implementation demonstrates the practical application of machine learning classification, exploratory data analysis, feature preprocessing, model comparison, Flask web application development, explainable AI diagnostics, secure authentication, batch inference, and deployment-oriented software engineering.
+The implementation demonstrates the practical application of machine learning classification, exploratory data analysis, feature preprocessing, model comparison, Flask web application development, explainable AI diagnostics, secure authentication, batch inference, automated testing, and deployment-oriented software engineering.
 
 ---
 
-## Original Project Context
+## 🎯 Original Project Context
 
 The Smart Lender project focuses on building a machine learning-powered web application for predicting the creditworthiness or loan approval likelihood of applicants.
 
 The project workflow includes:
-1. **Data Collection and Architecture Design**: Understanding target parameters and organizing the development environment.
-2. **Data Visualization and Analysis**: Generating distributions and checking correlations.
-3. **Data Preprocessing**: Handling missing values, mapping categorical levels, and scaling numeric ranges.
-4. **Machine Learning Model Building**: Fitting classifiers on training data and comparing outcomes.
-5. **Application Building**: Exposing model inference inside web routes.
 
-The machine learning predictions act as decision-support outputs to assist human credit officers in the following project scenarios:
+1. **Data Collection and Architecture Design**  
+   Understanding target parameters and organizing the development environment.
+
+2. **Data Visualization and Analysis**  
+   Generating distributions, analyzing applicant characteristics, and checking correlations.
+
+3. **Data Preprocessing**  
+   Handling missing values, mapping categorical levels, and scaling numerical ranges.
+
+4. **Machine Learning Model Building**  
+   Training classification models and comparing predictive outcomes.
+
+5. **Application Development**  
+   Exposing machine learning inference through Flask-based web routes.
+
+The machine learning predictions act as decision-support outputs to assist human credit officers in the following project scenarios.
 
 ### Scenario 1: Fast-Track Approval for Low-Risk Applicants
-A credit officer evaluates a salaried applicant with a stable income and positive credit history. The machine learning system can support faster loan evaluation by generating an approval prediction.
+
+A credit officer evaluates a salaried applicant with stable income and positive credit history. The machine learning system can support faster loan evaluation by generating an approval prediction.
 
 ### Scenario 2: High-Risk Applicant Detection
+
 Applicants with weak credit history or unstable financial profiles can be identified as higher-risk cases requiring additional review or document verification.
 
 ### Scenario 3: Batch Applicant Evaluation
+
 Financial analysts can process multiple applicant records through batch prediction to reduce repetitive manual evaluation work.
 
-*Notice: Predictions generated by the system are decision-support outputs and are not intended as final legal or financial decisions.*
+> **Notice:** Predictions generated by the system are decision-support outputs and are not intended as final legal or financial decisions.
 
 ---
 
-## Project Evolution and Enhancements
+## 🚀 Project Evolution and Enhancements
 
-This repository extends the core Smart Lender machine learning project into a more complete AI-powered underwriting support application. The implemented enhancements include:
+This repository extends the core Smart Lender machine learning project into a more complete AI-powered underwriting support application.
 
-### Dynamic Dashboard and Live Analytics
+The implemented enhancements include:
+
+### 📊 Dynamic Dashboard and Live Analytics
+
 - SQLite-backed prediction logging.
 - Dynamic total prediction count.
 - Dynamic approved application count.
 - Dynamic rejected application count.
-- Live approval and rejection ratio visualizer.
-- Database-driven dashboard metrics sync.
+- Live approval and rejection ratio visualization.
+- Database-driven dashboard metrics synchronization.
 - Graceful empty database fallback states.
+- Recent prediction activity tracking.
 
-### Explainable AI – Local Sensitivity Explanation
+### 🧠 Explainable AI – Local Sensitivity Explanation
+
 - Local prediction sensitivity analysis.
 - Feature perturbation checks against baseline training values.
 - Automatic extraction of the top three prediction influence factors.
-- Positive and negative influence classification and color codes.
-- Horizontal influence bar visualization.
+- Positive and negative influence classification.
+- Color-coded influence indicators.
+- Horizontal feature influence bar visualization.
 - Prediction-specific diagnostic explanations.
 
-> **Local Sensitivity Explanation Disclaimer:**
+> **Local Sensitivity Explanation Disclaimer:**  
 > Local Sensitivity Explanation measures model responsiveness to feature perturbations. It does not establish causal relationships between borrower characteristics and loan outcomes.
 
-### Bulk CSV Prediction
-- Batch applicant prediction processing.
-- Drag-and-drop CSV ingestion panel.
-- File schema and required columns validation checks.
-- 5 MB maximum file upload limit.
-- Missing-value handling using preprocessor median/mode fallback logic.
-- Malformed row isolation preventing batch inference crashes.
-- Ingestion batch approval statistics calculation.
-- Average confidence reporting.
-- Downloadable prediction reports.
-- Spreadsheet formula injection mitigation (prefixes critical cells with `'`).
+### 📂 Bulk CSV Prediction
 
-### Authentication and Security
+- Batch applicant prediction processing.
+- Drag-and-drop CSV ingestion portal.
+- CSV schema validation.
+- Required column validation checks.
+- 5 MB maximum file upload limit.
+- Missing-value handling using preprocessor median and mode fallback logic.
+- Malformed row isolation to prevent batch inference crashes.
+- Batch approval statistics calculation.
+- Batch rejection statistics calculation.
+- Average confidence reporting.
+- Top-row batch preview.
+- Downloadable complete prediction reports.
+- Spreadsheet formula injection mitigation by prefixing critical cells with `'`.
+
+### 🔐 Authentication and Security
+
 - Secure credit officer registration.
-- Secure login portal.
+- Secure user login portal.
 - Session-based authentication state management.
-- Protected application routes utilizing `@login_required` decorators.
+- Protected application routes using `@login_required` decorators.
 - PBKDF2/SHA256 secure password hashing.
 - Environment-based administrator configuration loading.
-- Environment-based application secret configuration loading.
+- Environment-based application secret configuration.
 - Temporary runtime secret generation fallback for local development.
-- Parameterized SQLite queries to prevent SQL injections.
+- Parameterized SQLite queries to reduce SQL injection risks.
 - Sanitized frontend error messages.
 - No hardcoded production credentials.
 
-### Custom Error Handling
+### ⚠️ Custom Error Handling
+
 Custom user-friendly templates are registered for:
+
 - HTTP 400 Bad Request
 - HTTP 404 Not Found
 - HTTP 413 Payload Too Large
 - HTTP 500 Internal Server Error
 
-*Low-level filesystem paths, database structures, and backend traceback dumps are never exposed to frontend users.*
+Low-level filesystem paths, database structures, and backend traceback dumps are not exposed to frontend users.
 
-### Automated Testing
-- Includes 27 automated unit and integration tests.
-- Verification result: **27 tests passed, 0 tests failed**.
-- Covered components:
-  - Session authorization blocks.
-  - New user registrations and validation rules.
-  - Dashboard metrics queries.
-  - Prediction profile evaluations.
-  - Empty CSV uploads validation.
-  - Testing database isolation (setUp and tearDown).
-  - Main application routes status checks.
+### 🧪 Automated Testing
+
+The repository includes **27 automated unit and integration tests**.
+
+**Verification Result:**
+
+```text
+27 tests passed
+0 tests failed
+```
+
+Covered components include:
+
+- Session authorization blocks.
+- New user registration.
+- Registration validation rules.
+- Dashboard metrics queries.
+- Prediction profile evaluations.
+- Empty CSV upload validation.
+- Testing database isolation using setup and teardown.
+- Main application route status checks.
+- Bulk prediction workflows.
 
 ---
 
-## Dataset Description
+## 📊 Dataset Description
 
-The system is trained on the standard Loan Prediction dataset. It contains the following features:
+The system is trained using a standard Loan Prediction dataset.
+
+The dataset contains structured applicant and loan information.
 
 | Feature Name | Type | Description / Domain |
 | :--- | :--- | :--- |
 | **Gender** | Categorical | Male or Female |
-| **Married** | Categorical | Marital status of the applicant (Yes / No) |
-| **Dependents** | Categorical | Number of dependents (0, 1, 2, 3+) |
-| **Education** | Categorical | Applicant education level (Graduate / Not Graduate) |
-| **Self_Employed** | Categorical | Whether the applicant is self-employed (Yes / No) |
-| **ApplicantIncome** | Numerical | Monthly income of the primary applicant (USD) |
-| **CoapplicantIncome**| Numerical | Monthly income of the co-applicant (USD) |
-| **LoanAmount** | Numerical | Requested loan amount in thousands (USD) |
-| **Loan_Amount_Term** | Numerical | Term of the loan in months (e.g., 360, 180) |
-| **Credit_History** | Categorical | Credit history score (1.0 = Good, 0.0 = Bad) |
-| **Property_Area** | Categorical | Location of the property (Urban / Semiurban / Rural) |
-| **Loan_Status** | Target Class | Ground truth decision (Y = Approved, N = Rejected) |
+| **Married** | Categorical | Marital status of the applicant |
+| **Dependents** | Categorical | Number of dependents: 0, 1, 2, or 3+ |
+| **Education** | Categorical | Graduate or Not Graduate |
+| **Self_Employed** | Categorical | Whether the applicant is self-employed |
+| **ApplicantIncome** | Numerical | Monthly income of the primary applicant |
+| **CoapplicantIncome** | Numerical | Monthly income of the co-applicant |
+| **LoanAmount** | Numerical | Requested loan amount |
+| **Loan_Amount_Term** | Numerical | Loan term duration in months |
+| **Credit_History** | Categorical | Credit history indicator |
+| **Property_Area** | Categorical | Urban, Semiurban, or Rural |
+| **Loan_Status** | Target Class | Y = Approved and N = Rejected |
 
 ---
 
-## Machine Learning Pipeline
+## ⚙️ Machine Learning Pipeline
 
-The pipeline is implemented inside `preprocess.py` and `train.py` following standard Scikit-Learn structures:
-1. **Identifier Removal**: Discards identifier columns (`Loan_ID`).
-2. **Imputation**: Continuous values impute to training medians; categorical columns impute to modes.
-3. **Categorical Encoding**: Maps string fields to integers via fitted nominal labels mapping.
-4. **Class Balancing**: Applies Synthetic Minority Over-sampling Technique (**SMOTE**) on training splits.
-5. **Continuous Scaling**: Scales numerical ranges to standard normal bounds via `StandardScaler`.
+The machine learning preprocessing and training pipeline is implemented through `preprocess.py` and `train.py`.
+
+### 1. Identifier Removal
+
+Identifier columns such as `Loan_ID` are removed before model training.
+
+### 2. Missing Value Imputation
+
+Numerical missing values are handled using training medians.
+
+Categorical missing values are handled using training modes.
+
+### 3. Categorical Encoding
+
+String-based categorical fields are converted into machine-readable numerical representations using fitted category mappings.
+
+### 4. Class Balancing
+
+Synthetic Minority Over-sampling Technique (**SMOTE**) is applied to the training split to improve minority-class representation.
+
+### 5. Feature Scaling
+
+Continuous numerical features are standardized using `StandardScaler`.
+
+### 6. Model Training
+
+Multiple machine learning classification algorithms are trained and evaluated.
+
+### 7. Model Serialization
+
+Trained preprocessing components and machine learning models are stored using `joblib` for web application inference.
 
 ---
 
-## Machine Learning Models
+## 🤖 Machine Learning Models
 
-The system evaluates and compares the following classification models using appropriate evaluation metrics:
-- **Decision Tree Classifier**: Simple flowchart decision branches based on Gini index criteria.
-- **Random Forest Classifier**: Bootstrap aggregating ensemble trees. High generalization bounds.
-- **K-Nearest Neighbors (KNN)**: Spatial distance classification mapping similarity neighborhoods.
-- **XGBoost Classifier**: Multi-tree gradient boosting engine. The project reference identifies XGBoost as the best-performing model in the original workflow.
+The system evaluates and compares multiple classification algorithms.
 
-Original workflow metrics and model comparisons are calculated on holdout splits, separating static evaluation metrics from the current repository runtime predictions.
+### Decision Tree Classifier
+
+A tree-based machine learning classifier that creates decision branches using feature-based splitting criteria.
+
+### Random Forest Classifier
+
+An ensemble learning algorithm combining multiple decision trees using bootstrap aggregation.
+
+### K-Nearest Neighbors – KNN
+
+A distance-based classification algorithm that predicts outcomes using neighboring training observations.
+
+### XGBoost Classifier
+
+A gradient boosting algorithm that combines multiple sequential decision trees to improve classification performance.
+
+The original Smart Lender project workflow identifies XGBoost as the best-performing model based on the project model evaluation process.
+
+Runtime prediction models can be selected through the SmartLender prediction interface.
 
 ---
 
-## Technology Stack
+## 💻 Technology Stack
 
-The platform is implemented using only technologies actually present in the repository, cross-referenced with `requirements.txt`:
+The platform uses technologies present in the repository and project dependency configuration.
 
 ### Programming Language
+
 - Python
 
 ### Machine Learning and Data Analysis
+
 - NumPy
 - Pandas
 - Scikit-learn
 - XGBoost
-- imbalanced-learn (SMOTE)
+- imbalanced-learn
+- SMOTE
 - Matplotlib
 - Seaborn
 - joblib
 
 ### Web Application
+
 - Flask
-- HTML (Bootstrap 5 templates)
-- CSS (custom glassmorphic theme styling)
-- JavaScript (ES6 client validation)
+- HTML5
+- Bootstrap 5
+- CSS3
+- JavaScript ES6
 - Jinja2
 
 ### Data Storage
+
 - SQLite
 
 ### Security
+
 - Werkzeug password hashing
 - Flask sessions
 - Environment variables
 - Python secrets module
 
 ### Deployment
+
 - Gunicorn
 - Procfile
 - WSGI-compatible deployment
+- Render cloud deployment
 
 ---
 
 ## 📂 Repository Folder Structure
-```
-SmartLender/
-├── Dataset/                   # Raw credit csv files
-├── Models/                    # Serialized models and scalers
+
+```text
+SmartLender-AI/
+├── Dataset/
+│   └── Loan prediction dataset files
+│
+├── Models/
+│   └── Serialized machine learning models
+│
+├── Notebook/
+│   └── Machine learning experimentation notebooks
+│
 ├── static/
-│   ├── css/styles.css        # Theme variables & glass styling
-│   ├── js/main.js            # Frontend warning validator
-│   ├── images/                # EDA graphs
-│   └── reports/               # Bulk CSV export directory
-├── templates/                 # UI HTML templates
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   └── main.js
+│   ├── images/
+│   │   └── EDA and application images
+│   └── reports/
+│       └── Bulk prediction export directory
+│
+├── templates/
+│   └── Flask HTML templates
+│
 ├── tests/
-│   └── test_app.py            # Isolated test discovery runner
-├── .env.example               # Configuration placeholders template
-├── app.py                     # Primary controller entrypoint
-├── preprocess.py              # Custom preprocessing pipeline class
-├── Procfile                   # Web WSGI deployment target command
-└── train.py                   # Classifier training orchestration script
+│   └── test_app.py
+│
+├── .env.example
+├── .gitignore
+├── LICENSE
+├── Procfile
+├── README.md
+├── app.py
+├── db.py
+├── preprocess.py
+├── requirements.txt
+├── runtime.txt
+└── train.py
 ```
 
 ---
 
-## 🚀 Installation & Local Execution
+## 🚀 Installation and Local Execution
 
-### 1. Prerequisites
-Ensure you have **Python 3.12+** installed on your workstation.
+### 1. Clone the Repository
 
-### 2. Install Dependencies
+```bash
+git clone https://github.com/sriharshaduvvuri/SmartLender-AI.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd SmartLender-AI
+```
+
+### 2. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Activate the virtual environment on Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+For Linux or macOS:
+
+```bash
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Train Machine Learning Models
-Generate model pickle binaries and static charts:
+### 4. Configure Environment Variables
+
+Use `.env.example` as the configuration reference.
+
+Example configuration:
+
+```env
+SECRET_KEY=your-secure-secret-key
+ADMIN_USERNAME=your-admin-username
+ADMIN_PASSWORD=your-secure-admin-password
+```
+
+> Never commit production passwords or secret keys to a public repository.
+
+### 5. Train Machine Learning Models
+
+Generate machine learning model files and project visualization outputs:
+
 ```bash
 python train.py
 ```
 
-### 4. Run the Flask Web Application
-Launch the server:
+### 6. Run the Flask Application
+
 ```bash
 python app.py
 ```
-Open a browser and navigate to: `http://127.0.0.1:5000`
+
+Open the application in a browser:
+
+```text
+http://127.0.0.1:5000
+```
 
 ---
 
-## 🔑 Default Credentials
-Use the following credentials to access the secured dashboard:
-- **Username**: `admin`
-- **Password**: `admin123`
+## 🔐 Application Access
+
+SmartLender AI uses session-based authentication.
+
+New users can create an account through the registration portal and securely sign in to access:
+
+- Dynamic analytics dashboard.
+- Individual loan prediction.
+- Prediction explanation.
+- Bulk CSV inference.
+
+Passwords are stored using secure PBKDF2/SHA256 password hashing.
+
+Production secrets and administrator configuration are managed through environment variables.
 
 ---
 
 ## 🧪 Testing Instructions
 
-Run the 27 unit and integration tests covering security, model prediction constraints, database writes, and bulk file uploads:
+Run the automated unit and integration test suite using:
+
 ```bash
 python -m unittest discover -s tests
 ```
 
+Expected verified test result:
+
+```text
+Ran 27 tests
+
+OK
+```
+
+The test suite covers authentication, application routes, prediction workflows, dashboard metrics, database operations, and bulk CSV validation.
+
 ---
 
-## 20. Deployment
-The application is pre-configured for production WSGI server configurations. Run using Gunicorn:
+## ☁️ Deployment
+
+SmartLender AI is configured for WSGI-compatible production deployment.
+
+Run the application using Gunicorn:
+
 ```bash
 gunicorn app:app
 ```
 
+### Live Production Deployment
+
+The application is currently deployed on Render.
+
+🔗 **Live Application:**  
+https://smartlender-ai-gytu.onrender.com
+
+The repository includes:
+
+- `Procfile`
+- `requirements.txt`
+- `runtime.txt`
+- Gunicorn WSGI configuration
+
+These files support cloud-based Python web application deployment.
+
+> The Render free-tier instance may spin down after inactivity. The first application request after inactivity may require additional startup time.
+
 ---
 
-## 21. Screenshots
-*Placeholder tags for UI presentation screens:*
-- **Dashboard**: `[Dashboard Screenshot Placeholder - showing metric cards and doughnut charts]`
-- **Borrower Evaluation Form**: `[Borrower Form Screenshot Placeholder - illustrating input dropdowns and fields]`
-- **Prediction Result and Explanation**: `[Prediction Result Screenshot Placeholder - displaying approved state and local sensitivity bars]`
-- **Bulk Ingestion Portal**: `[Bulk Portal Screenshot Placeholder - illustrating file drop zone and processing list]`
-- **Authentication Page**: `[Authentication Card Screenshot Placeholder - illustrating login panel]`
+## 📸 Application Features
+
+### Dynamic Analytics Dashboard
+
+The dashboard displays real-time prediction activity including:
+
+- Total predictions.
+- Approved applications.
+- Rejected applications.
+- Approval ratio.
+- Rejection ratio.
+- Recent prediction activity.
+
+### Individual Loan Prediction
+
+Credit officers can enter borrower and loan information through a structured evaluation form.
+
+The application generates:
+
+- Loan approval or rejection prediction.
+- Prediction confidence score.
+- Selected model classifier.
+- Inference information.
+- Borrower profile summary.
+- Underwriter advisory output.
+
+### Explainable AI Diagnostics
+
+The prediction result interface includes a Local Sensitivity Explanation panel.
+
+The system identifies the primary model-responsive features associated with the current prediction.
+
+### Bulk Ingestion Portal
+
+Users can upload structured CSV datasets and perform batch machine learning inference.
+
+The batch prediction interface displays:
+
+- Total processed applications.
+- Approved applications.
+- Rejected applications.
+- Approval percentage.
+- Rejection percentage.
+- Average prediction confidence.
+- Batch preview table.
+
+Users can download the complete CSV dataset with generated prediction results.
 
 ---
 
-## 22. Limitations
-- **SQLite Database**: Suitable for single-instance, small scale deployments. High-concurrency operations require migrating database drivers (e.g. to PostgreSQL).
-- **Tabular Preprocessing**: Features are evaluated on fixed structural definitions. Schema drift or column modifications require refitting preprocessor checkpoints.
+## ⚠️ Limitations
+
+### SQLite Database
+
+SQLite is suitable for educational, demonstration, and small-scale single-instance deployments.
+
+High-concurrency production applications should migrate to a managed database system such as PostgreSQL.
+
+### Fixed Tabular Schema
+
+The machine learning pipeline operates on predefined structured applicant features.
+
+Schema changes or major feature modifications require preprocessing and model retraining.
+
+### Educational Dataset
+
+The project uses a loan prediction dataset for machine learning experimentation and educational demonstration.
+
+The model is not validated for real-world regulated financial decision-making.
+
+### Local Sensitivity Analysis
+
+Feature sensitivity values represent model responsiveness to feature perturbations.
+
+They should not be interpreted as causal financial explanations.
 
 ---
 
-## 23. Future Improvements
-- Migration to PostgreSQL for multi-process environments.
-- Active feedback loops: allow underwriters to correct wrong models outputs to append data for future training.
+## 🔮 Future Improvements
+
+Planned and possible future enhancements include:
+
+- PostgreSQL migration for multi-process deployment.
+- Role-based access control for administrators and credit officers.
+- Advanced model monitoring dashboard.
+- Prediction drift detection.
+- Dataset schema drift monitoring.
+- SHAP-based model explainability.
+- Model version tracking.
+- REST API inference endpoints.
+- Docker containerization.
+- CI/CD integration using GitHub Actions.
+- Cloud database integration.
+- Active feedback loops for underwriter corrections.
+- Model retraining pipelines.
 - Real-time identity validation integration.
+- Application audit logs.
+- PDF underwriting report generation.
 
 ---
 
-## Developer
+## 👨‍💻 Developer
 
 ### Duvvuri Subrahmanya Sri Harsha Sarma
+
 **Domain:** Artificial Intelligence & Machine Learning
+
 **Project:** SmartLender AI – Intelligent Loan Approval Prediction System
+
 **Program:** SmartBridge AI & ML Project
+
 **Email:** sriharshasarmaduvvuri@gmail.com
 
-This implementation was developed, enhanced, secured, tested, and documented as part of the Smart Lender AI & ML project work.
+This implementation was developed, enhanced, secured, tested, deployed, and documented as part of the Smart Lender Artificial Intelligence and Machine Learning project work.
 
 ---
 
-## Acknowledgement
+## 🙏 Acknowledgement
 
 This project was undertaken through the SmartBridge / SkillWallet Artificial Intelligence and Machine Learning project learning environment.
 
-The Smart Lender project provided the machine learning loan eligibility prediction problem context and project workflow. This repository documents the implemented and extended SmartLender AI application, including additional explainability, security, authentication, analytics, bulk inference, testing, and deployment-readiness improvements.
+The Smart Lender project provided the machine learning loan eligibility prediction problem context and core project workflow.
+
+This repository documents the implemented and extended SmartLender AI application, including additional explainability, security, authentication, dynamic analytics, bulk inference, automated testing, and deployment-readiness improvements.
 
 ---
 
-## Contact
+## 📬 Contact
 
 **Duvvuri Subrahmanya Sri Harsha Sarma**
-Email: sriharshasarmaduvvuri@gmail.com
 
-For questions related to this implementation, machine learning workflow, application architecture, or project enhancements, contact the developer using the email above.
+**Email:** sriharshasarmaduvvuri@gmail.com
+
+For questions related to this implementation, machine learning workflow, application architecture, deployment, or project enhancements, contact the developer using the email above.
 
 ---
 
-## Disclaimer
-"SmartLender AI is an educational machine learning project and is not intended to make real-world lending or financial decisions."
+## ⚖️ Disclaimer
+
+> **SmartLender AI is an educational machine learning project and is not intended to make real-world lending, credit, legal, or financial decisions.**
+
+Machine learning predictions generated by this application are demonstration and decision-support outputs only.
+
+---
+
+## ⭐ Support
+
+If you find this project useful, consider giving the repository a **Star ⭐**.
+
+**Live Demo:**  
+https://smartlender-ai-gytu.onrender.com
